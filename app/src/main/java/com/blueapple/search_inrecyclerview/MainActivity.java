@@ -4,8 +4,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public RecyclerView mRecyclerList;
 
     DataAdapter dataAdapter;
+    public Spinner mSpinner;
     //filter
 
 
@@ -29,41 +35,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
 
-               getSupportActionBar().hide();
-               addData();
+        getSupportActionBar().hide();
+        addData();
 
-           mTvSearchview.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mTvSearchview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
 
-           }
+            }
 
-           @Override
-           public void afterTextChanged(Editable s) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-               filter(s.toString());
 
-           }
-       });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                filter(s.toString());
+
+            }
+        });
     }
 
-    private void filter(String text)
-    {
-        ArrayList<MyModel> filteredList=new ArrayList<>();
+    private void filter(String text) {
+        ArrayList<MyModel> filteredList = new ArrayList<>();
 
-        for (MyModel myModel:arrayList)
-        {
-                if (myModel.getCountry_name().toLowerCase().contains(text.toLowerCase()))
-                {
-                    filteredList.add(myModel);
-                }
+        for (MyModel myModel : arrayList) {
+            if (myModel.getCountry_name().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(myModel);
+            }
         }
 
         dataAdapter.filterList(filteredList);
@@ -71,14 +74,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void addData()
-    {
-        MyModel myModel1=new MyModel("India");
-        MyModel myModel2=new MyModel("US");
-        MyModel myModel3=new MyModel("Russia");
-        MyModel myModel4=new MyModel("Japan");
-        MyModel myModel5=new MyModel("Indonesia");
-        MyModel myModel6=new MyModel("Israil");
+    private void addData() {
+        MyModel myModel1 = new MyModel("India");
+        MyModel myModel2 = new MyModel("US");
+        MyModel myModel3 = new MyModel("Russia");
+        MyModel myModel4 = new MyModel("Japan");
+        MyModel myModel5 = new MyModel("Indonesia");
+        MyModel myModel6 = new MyModel("Israil");
 
         arrayList.add(myModel1);
         arrayList.add(myModel2);
@@ -89,17 +91,43 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("arraylist", String.valueOf(arrayList.size()));
 
-        dataAdapter=new DataAdapter(this,arrayList);
+        dataAdapter = new DataAdapter(this, arrayList);
+
+        ArrayAdapter<MyModel> arrayAdapter=new ArrayAdapter<MyModel>(this,
+                android.R.layout.simple_spinner_dropdown_item,arrayList);
+
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mSpinner.setAdapter(arrayAdapter);
 
         mRecyclerList.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerList.setHasFixedSize(true);
         mRecyclerList.setAdapter(dataAdapter);
 
 
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                //Toast.makeText(MainActivity.this, ""+position, Toast.LENGTH_SHORT).show();
+
+                MyModel myModel= (MyModel) parent.getSelectedItem();
+
+                Toast.makeText(MainActivity.this, ""+position+" "+myModel.getCountry_name(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
     }
 
     private void initView() {
-        mTvSearchview =  findViewById(R.id.tv_searchview);
+        mTvSearchview = findViewById(R.id.tv_searchview);
         mRecyclerList = (RecyclerView) findViewById(R.id.recyclerList);
+        mSpinner = (Spinner) findViewById(R.id.spinner);
     }
 }

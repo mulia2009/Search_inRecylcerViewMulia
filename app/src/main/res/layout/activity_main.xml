@@ -8,10 +8,17 @@
     android:weightSum="1"
     tools:context=".MainActivity">
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
 
         <EditText
             android:id="@+id/tv_searchview"
             android:textSize="20dp"
+            android:layout_marginTop="20dp"
             android:hint="search"
             android:singleLine="true"
             android:layout_gravity="center"

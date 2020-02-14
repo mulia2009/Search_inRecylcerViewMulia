@@ -1,5 +1,7 @@
 package com.blueapple.search_inrecyclerview;
 
+import androidx.annotation.NonNull;
+
 public class MyModel
 {
     String country_name;
@@ -25,5 +27,12 @@ public class MyModel
 
     public void setCountry_name(String country_name) {
         this.country_name = country_name;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+
+        return country_name;
     }
 }
