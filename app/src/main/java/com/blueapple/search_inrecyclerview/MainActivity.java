@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public RecyclerView mRecyclerList;
 
     DataAdapter dataAdapter;
+    //filter
 
 
     @Override
@@ -28,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
 
-       addData();
+               getSupportActionBar().hide();
+               addData();
 
-       mTvSearchview.addTextChangedListener(new TextWatcher() {
+           mTvSearchview.addTextChangedListener(new TextWatcher() {
            @Override
            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
